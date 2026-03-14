@@ -2,8 +2,8 @@
   "servers": {
     "excalidraw": {
       "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "excalidraw-mcp"],
+      "command": "node",
+      "args": ["${workspaceFolder}/dist/index.js"],
       "env": {
         "EXPRESS_SERVER_URL": "http://192.168.68.89:3010",
         "ENABLE_CANVAS_SYNC": "true"
