@@ -1,0 +1,31 @@
+version: '3.8'
+
+# Podman Compose for Excalidraw - Homelab deployment
+# Server: 192.168.68.89
+# UI available at: http://192.168.68.89:3010
+#
+# Usage:
+#   podman-compose up -d       # start
+#   podman-compose down        # stop
+#   podman-compose logs -f     # follow logs
+
+services:
+  canvas:
+    build:
+      context: .
+      dockerfile: Dockerfile.canvas
+    image: mcp-excalidraw-canvas:latest
+    container_name: excalidraw
+    ports:
+      - "3010:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOST=0.0.0.0
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (r) => process.exit(r.statusCode === 200 ? 0 : 1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
